@@ -1,6 +1,6 @@
-<!-- Project Logo Placeholder -->
+<!-- Project Logo -->
 <p align="center">
-  <img src="https://placehold.co/200x200?text=Cliqr.co+Logo" alt="Cliqr.co Logo" width="200"/>
+  <img src="https://storage.googleapis.com/hostinger-horizons-assets-prod/8c02bbe1-80b7-49b5-b4ba-340c3af8df69/90c86ab753a1b7ee69cfe8a21275f1fe.png" alt="Cliqr.co Logo" width="200"/>
 </p>
 
 <h1 align="center">Cliqr.co</h1>
@@ -28,9 +28,8 @@ Cliqr.co is a modern, all-in-one platform for CRM, invoicing, and team managemen
 - ...and more!
 
 ## 🖥️ Screenshots
-<!-- Replace with real screenshots -->
 <p align="center">
-  <img src="https://placehold.co/600x300?text=Dashboard+Screenshot" alt="Dashboard Screenshot"/>
+  <img src="./leads-pipeline-screenshot.png" alt="Leads Pipeline Screenshot"/>
 </p>
 
 ## 🛠️ Tech Stack
