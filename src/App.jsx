@@ -7,6 +7,8 @@ import LoginForm from '@/components/Auth/LoginForm';
 import SignUpForm from '@/components/Auth/SignUpForm';
 import ForgotPasswordForm from '@/components/Auth/ForgotPasswordForm';
 import OnboardingForm from '@/components/Auth/OnboardingForm';
+import InvitationOnboardingForm from '@/components/Auth/InvitationOnboardingForm';
+import InvitationSuccessPage from '@/components/Auth/InvitationSuccessPage';
 import Sidebar from '@/components/Layout/Sidebar';
 import Header from '@/components/Layout/Header';
 import DashboardOverview from '@/components/Dashboard/DashboardOverview';
@@ -276,6 +278,8 @@ function App() {
                 <Route path="/update-password" element={<UpdatePasswordPage />} />
                 <Route path="/signup" element={<SignUpForm />} />
                 <Route path="/forgot-password" element={<ForgotPasswordForm />} />
+                <Route path="/invitation" element={<InvitationOnboardingForm />} />
+                <Route path="/invitation-success" element={<InvitationSuccessPage />} />
                 <Route path="/*" element={<MainApp />} />
             </Routes>
             <Toaster />

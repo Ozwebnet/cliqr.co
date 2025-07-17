@@ -153,22 +153,21 @@ const AddUserDialog = ({ onUserAdded }) => {
       return;
     }
     setIsSubmitting(true);
+    
     try {
-      const { data, error } = await supabase.functions.invoke('admin-invite-user', {
-        body: JSON.stringify({ email: inviteEmail, role: 'client' }),
-      });
-
-      if (error) throw error;
-      if (data.error) throw new Error(data.error);
+      // Use the enhanced invitation workflow
+      const { sendEnhancedInvitation } = await import('@/hooks/auth/enhancedInvitationActions');
       
-      toast({
-        title: 'Invitation Sent!',
-        description: `An invitation email has been sent to ${inviteEmail}.`,
-        variant: 'success'
-      });
-      if (onUserAdded) onUserAdded();
-      setOpen(false);
-      resetForm();
+      const result = await sendEnhancedInvitation(
+        { email: inviteEmail, role: 'client' },
+        currentUser
+      );
+
+      if (result.success) {
+        if (onUserAdded) onUserAdded();
+        setOpen(false);
+        resetForm();
+      }
     } catch (error) {
       toast({
         title: 'Invitation Failed',
@@ -247,7 +246,18 @@ const AddUserDialog = ({ onUserAdded }) => {
           <TabsContent value="invite">
             <div className="p-6 space-y-6">
               <FormSection title="Invite New Client via Email">
-                <p className="text-slate-400 text-sm md:col-span-2">An invitation link will be sent to the specified email address. The user will be prompted to set up their own account and password. They will be automatically assigned the "Client" role.</p>
+                <p className="text-slate-400 text-sm md:col-span-2">
+                  <strong>Enhanced Onboarding Process:</strong> The invitee will receive an email with a secure link to complete their profile information. After they submit their details, you'll review and add internal information before finalizing their account creation.
+                </p>
+                <div className="bg-slate-800 p-4 rounded-lg border border-slate-600 md:col-span-2">
+                  <h4 className="text-purple-300 font-medium mb-2">📋 Process Overview:</h4>
+                  <ol className="text-slate-400 text-sm space-y-1 list-decimal list-inside">
+                    <li>Client receives invitation email with secure link</li>
+                    <li>Client completes their profile information</li>
+                    <li>You review and add internal client details</li>
+                    <li>Account is created and client gains access</li>
+                  </ol>
+                </div>
                 <MemoizedInputField id="invite_email" label="Client Email Address" type="email" icon={<Mail />} value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="client@example.com" isRequired className="md:col-span-2"/>
               </FormSection>
             </div>

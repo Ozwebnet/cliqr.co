@@ -11,7 +11,7 @@ import { supabase } from '@/lib/supabaseClient';
 import AddUserDialog from '@/components/CRM/AddUserDialog';
 import TeamMemberSignUpDialog from '@/components/CRM/TeamMember/TeamMemberSignUpDialog';
 import UserListItem from '@/components/CRM/UserListItem';
-import PendingInvitesManager from '@/components/CRM/PendingInvitesManager';
+import EnhancedPendingInvitesManager from '@/components/CRM/EnhancedPendingInvitesManager';
 import LoadingBar from '@/components/ui/LoadingBar';
 
 const CRMDashboard = () => {
@@ -320,9 +320,9 @@ const CRMDashboard = () => {
         </Card>
       </motion.div>
 
-      {/* Pending Invitations Section - Smaller widget below User Accounts */}
-      <div className="max-w-2xl">
-        <PendingInvitesManager />
+      {/* Enhanced Pending Invitations Section */}
+      <div className="max-w-4xl">
+        <EnhancedPendingInvitesManager />
       </div>
     </div>
   );

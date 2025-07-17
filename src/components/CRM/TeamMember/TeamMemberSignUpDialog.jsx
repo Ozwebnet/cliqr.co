@@ -105,18 +105,21 @@ const TeamMemberSignUpDialog = ({ onUserAdded }) => {
       return;
     }
     setIsSubmitting(true);
+    
     try {
-      const { data, error } = await supabase.functions.invoke('admin-invite-user', {
-        body: JSON.stringify({ email: inviteEmail, role: 'admin' }),
-      });
+      // Use the enhanced invitation workflow
+      const { sendEnhancedInvitation } = await import('@/hooks/auth/enhancedInvitationActions');
+      
+      const result = await sendEnhancedInvitation(
+        { email: inviteEmail, role: 'admin' },
+        user
+      );
 
-      if (error) throw error;
-      if (data.error) throw new Error(data.error);
-
-      toast({ title: 'Invitation Sent!', description: `An invitation email has been sent to ${inviteEmail}.`, variant: 'success' });
-      if (onUserAdded) onUserAdded();
-      setOpen(false);
-      resetForm();
+      if (result.success) {
+        if (onUserAdded) onUserAdded();
+        setOpen(false);
+        resetForm();
+      }
     } catch (error) {
       toast({ title: 'Invitation Failed', description: error.message || 'An unexpected error occurred.', variant: 'destructive' });
     } finally {
@@ -178,7 +181,18 @@ const TeamMemberSignUpDialog = ({ onUserAdded }) => {
               <div className="space-y-4 py-4">
                 <h2 className="text-xl font-semibold text-purple-300 mb-4">📧 Invite via Email</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                  <p className="text-slate-400 text-sm md:col-span-2">An invitation link will be sent to the specified email address. The user will be prompted to set up their own account and password. Their role will be set to 'Admin'.</p>
+                  <p className="text-slate-400 text-sm md:col-span-2">
+                    <strong>Enhanced Onboarding Process:</strong> The team member will receive an email with a secure link to complete their profile information. After they submit their details, you'll review and add internal information (skills, rates, banking) before finalizing their account creation.
+                  </p>
+                  <div className="bg-slate-800 p-4 rounded-lg border border-slate-600 md:col-span-2">
+                    <h4 className="text-orange-300 font-medium mb-2">🔄 Workflow Steps:</h4>
+                    <ol className="text-slate-400 text-sm space-y-1 list-decimal list-inside">
+                      <li>Team member receives invitation email</li>
+                      <li>They complete personal & business information</li>
+                      <li>You review and add skills, rates & banking details</li>
+                      <li>Account created with admin permissions</li>
+                    </ol>
+                  </div>
                   <MemoizedInputField id="invite_email" label="Team Member Email" type="email" icon={<Mail />} value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="teammember@example.com" isRequired className="md:col-span-2"/>
                 </div>
               </div>
